@@ -1,0 +1,1 @@
+https://bootify.io/spring-security/rest-api-spring-security-with-jwt.html

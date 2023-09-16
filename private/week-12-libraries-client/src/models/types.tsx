@@ -1,0 +1,1 @@
+export type LoadingStatus = "LOADED" | "LOADING" | "ERROR"
