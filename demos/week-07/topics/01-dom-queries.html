@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <p id="message" class="x">Para 1 (#message)</p>
+        
+        <p class="x">Para 2 (class x)</p>
+        
+        <section>
+            <p class="x">Para within a section (class x)</p>
+        </section>
+        
+        <p>Para 3</p>
+
+        <script>
+            /**
+             * Get message element by id
+             * Get elements with class x (getElementsByClassName)
+             * Get elements with class x (querySelectorAll)
+             * Get first element with class name x (querySelector)
+             * Get first element with class name x that lies within a section (2 approaches - using CSS selector, and searching in a DOM subtree)
+             */
+            const p = document.getElementById( 'message' );
+            console.log( p.innerText );
+
+            // Reference - difference between NodeList and HTMLCollection (live list) - https://eecs.csuohio.edu/~sschung/CIS408/Collection_vs_List.pdf
+            const paras = document.getElementsByClassName( 'x' );
+            console.log( paras );
+            console.log( paras[0] );
+            console.log( paras.length );
+
+            // you pass a CSS selector
+            // querySelector gives the first element that matches the CSS selector
+            // Reference: Difference between innerText and textContent - https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent#differences_from_innertext
+            const pAnother = document.querySelector( '#message' );
+            console.log( pAnother.innerText );
+
+            const pAll = document.querySelectorAll( 'p' );
+            console.log( pAll );
+            console.log( pAll.length );
+            console.log( pAll[0] );
+            console.log( pAll[3] );
+
+            const pWithinSection = document.querySelector( 'section p' );
+            console.log( pWithinSection );
+
+            const section = document.querySelector( 'section' );
+            // we restrict our search of 'p' to within the selected section
+            const pWithinSectionAnother = section.querySelector( 'p' );
+            console.log( pWithinSectionAnother );
+        </script>
+    </body>
+</html>
