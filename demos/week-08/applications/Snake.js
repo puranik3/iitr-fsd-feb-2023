@@ -18,7 +18,42 @@ export class Snake {
         context.fillStyle = '#000000';
         context.fillRect( this.head.x * cellSize, this.head.y * cellSize, cellSize, cellSize );
 
+        const size = cellSize / 10;
+        const offset = cellSize / 3;
+        const x = cellSize * this.head.x;
+        const y = cellSize * this.head.y;
+
         // eyes
+        switch (this.direction) {
+            case Directions.UP:
+                context.beginPath();
+                context.arc( x + offset, y + offset, size, 0, 2 * Math.PI );
+                context.arc( x + 2 * offset, y + offset, size, 0, 2 * Math.PI );
+                context.fillStyle = "white";
+                context.fill();
+                break;
+            case Directions.DOWN:
+                context.beginPath();
+                context.arc( x + offset, y + 2 * offset, size, 0, 2 * Math.PI );
+                context.arc( x + 2 * offset, y + 2 * offset, size, 0, 2 * Math.PI );
+                context.fillStyle = "white";
+                context.fill();
+                break;
+            case Directions.RIGHT:
+                context.beginPath();
+                context.arc( x + 2 * offset, y + offset, size, 0, 2 * Math.PI );
+                context.arc( x + 2 * offset, y + 2 * offset, size, 0, 2 * Math.PI );
+                context.fillStyle = "white";
+                context.fill();
+                break;
+            case Directions.LEFT:
+                context.beginPath();
+                context.arc( x + offset, y + offset, size, 0, 2 * Math.PI );
+                context.arc( x + offset, y + 2 * offset, size, 0, 2 * Math.PI );
+                context.fillStyle = "white";
+                context.fill();
+                break;
+        }
 
         // tail
         context.fillStyle = '#888888';
