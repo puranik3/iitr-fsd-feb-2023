@@ -1,5 +1,5 @@
 // only function components can call useState to maintain state
-import { useState } from 'react'
+import { useState, MouseEvent } from 'react'
 // import React from 'react'; // not needed for React 18+
 import PaymentOptions from "../../types/PaymentOptions";
 import CreditDebitCard from "../CreditDebitCard/CreditDebitCard";
@@ -17,6 +17,8 @@ const paymentOptions = [
 console.log( paymentOptions );
 
 const Menu = () => {
+    console.log( 'component rendered' );
+
     // "state" -> is data that a component maintains, and which changes with time. As the data changes, the UI will refresh. State data is not maintained using local variable.
     // Hey React! pls maintain a state variable for me - react returns in an array [ value, setter ]
 
@@ -43,6 +45,10 @@ const Menu = () => {
     // Within {} in an element's content -> {number}, {string}, {element}, {array of number, string, element}
     // {boolean/null/undefined} -> does not show anything
 
+    const clickHandler = ( event : MouseEvent ) => {
+        alert( 'clicked' );
+    };
+
     return (
         <div className="menu">
             <div className="payment-options">
@@ -63,7 +69,7 @@ const Menu = () => {
                 {
                     // returns an array of react elements, which is fine
                     paymentOptions.map( po => (
-                        <button className="payment-option" onClick={() => setOption( po )}>
+                        <button className={"payment-option " + ( ( po === option ) ? "payment-option-selected" : "")} onClick={( event ) => setOption( po )}>
                             {po}
                         </button>
                     ))
