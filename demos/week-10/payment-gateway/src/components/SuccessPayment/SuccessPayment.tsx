@@ -1,7 +1,11 @@
 import Dialog from "../Dialog/Dialog";
+import PaymentOptions from "../../types/PaymentOptions";
+
+import './SuccessPayment.css';
 
 type Props = {
-    onClose: () => void
+    onClose: () => void,
+    paymentOption: PaymentOptions
 }
 
 const SuccessPayment = ( props : Props ) => {
@@ -15,7 +19,7 @@ const SuccessPayment = ( props : Props ) => {
 
                 <div>Transaction Id:	123456789012</div>
                 <div>Transaction Date:	12-03-2021</div>
-                <div>Payment Mode:	Credit/Debit Card</div>
+                <div>Payment Mode:	{props.paymentOption}</div>
 
                 <button
                     className='btn btn-confirm'

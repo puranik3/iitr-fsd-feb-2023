@@ -1,6 +1,7 @@
 import { ChangeEvent, Component, FormEvent, Fragment } from "react";
-import { range } from '../../services/utils';
 import ConfirmPayment from "../ConfirmPayment/ConfirmPayment";
+import PaymentOptions from "../../types/PaymentOptions";
+import { range } from '../../services/utils';
 
 class CreditDebitCard extends Component {
     state = {
@@ -174,6 +175,7 @@ class CreditDebitCard extends Component {
                     <ConfirmPayment
                         onNo={this.closeConfirmDialog}
                         onSuccessPaymentClose={this.closeConfirmDialogAndResetForm}
+                        paymentOption={PaymentOptions.CCDC}
                     />
                 )}
             </Fragment>

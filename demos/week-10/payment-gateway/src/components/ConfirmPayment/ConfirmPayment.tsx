@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import Dialog from "../Dialog/Dialog";
 import SuccessPayment from '../SuccessPayment/SuccessPayment';
+import PaymentOptions from "../../types/PaymentOptions";
 
 type Props = {
     onNo: () => void,
-    onSuccessPaymentClose: () => void
+    onSuccessPaymentClose: () => void,
+    paymentOption: PaymentOptions
 }
 
 const ConfirmPayment = ( props : Props ) => {
@@ -13,6 +15,7 @@ const ConfirmPayment = ( props : Props ) => {
     return showSuccess ? (
         <SuccessPayment
             onClose={props.onSuccessPaymentClose}
+            paymentOption={props.paymentOption}
         />
     ) : (
         <Dialog
