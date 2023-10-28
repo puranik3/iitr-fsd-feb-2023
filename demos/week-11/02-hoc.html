@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Higher-order Component (HoC)</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div id="root"></div>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.js"></script>
+
+        <script type="text/babel">
+            const withCounter = ( Component ) => {
+                // generate a wrapper class...
+                return class extends React.Component {
+                    state = {
+                        value: 1
+                    };
+
+                    decrement = () => {
+                        this.setState({
+                            value: this.state.value - 1
+                        });
+                    }
+                    
+                    increment = () => {
+                        this.setState({
+                            value: this.state.value + 1
+                        });
+                    }
+
+                    render() {
+                        // pass to Component child the things it needs as props
+                        return (
+                            <Component
+                                value={this.state.value}
+                                increment={this.increment}
+                                decrement={this.decrement}
+                                {...this.props}
+                            />
+                        );
+                    }
+                };
+            };
+
+            const Counter = ( { value, increment, decrement, x } ) => {
+                return (
+                    <div className="m-3">
+                        <button
+                            onClick={decrement}
+                        >
+                                -
+                        </button>
+                        <span className="mx-2">{value}</span>
+                        <button
+                            onClick={increment}
+                        >
+                                +
+                        </button>
+                        <span className="ms-2">x = {x}</span>
+                    </div>
+                )
+            };
+
+            const CounterWrapper = withCounter( Counter );
+
+            class FancyCounter extends React.Component {
+                render() {
+                    const { value, increment, decrement } = this.props;
+
+                    return (
+                        <div className="m-3">
+                            <button
+                                className="btn btn-primary btn-sm"
+                                onClick={decrement}
+                            >
+                                    -
+                            </button>
+                            <span className="mx-2">{value}</span>
+                            <button
+                                className="btn btn-primary btn-sm"
+                                onClick={increment}
+                            >
+                                    +
+                            </button>
+                        </div>
+                    )
+                }
+            }
+
+            const FancyCounterWrapper = withCounter( FancyCounter );
+
+            const root = ReactDOM.createRoot( document.getElementById( 'root' ) );
+            root.render(
+                <>
+                    <CounterWrapper x={100} />
+                    <FancyCounterWrapper />
+                </>
+            );
+        </script>
+    </body>
+</html>

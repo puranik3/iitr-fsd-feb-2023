@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lifecycle methods - class components</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div id="root"></div>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js"></script>
+
+        <script type="text/babel">
+            const getWorkshops = async ( _page ) => {
+                const response = await axios.get( `http://localhost:8001/workshops`, {
+                    params: {
+                        _page: _page
+                    }
+                });
+                return response.data;
+            };
+
+            class WorkshopsList extends React.Component {
+                state = {
+                    loading: true,
+                    workshops: [],
+                    error: null,
+                    _page: 1
+                };
+
+                previousPage = () => {
+                    // console.log( this );
+
+                    if( this.state._page > 1 ) {
+                        this.setState({
+                            _page: this.state._page - 1
+                        });
+                    }
+                }
+
+                nextPage = () => {
+                    // console.log( this );
+
+                    this.setState({
+                        _page: this.state._page + 1
+                    });
+                }
+
+                render() {
+                    // console.log( 'render' );
+                    const { loading, workshops, error, _page } = this.state;
+                    
+                    return (
+                        <div className="container my-5">
+                            <h1>List of workshops</h1>
+                            <div className="my-3">
+                                <button
+                                    className="btn btn-primary me-2"
+                                    onClick={this.previousPage}
+                                >
+                                    Previous
+                                </button>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={this.nextPage}
+                                >
+                                    Next
+                                </button>
+                                <div>You are viewing page {_page}</div>
+                            </div>
+                            {
+                                loading && (
+                                    <div className="text-center">
+                                        <div className="spinner-border" role="status">
+                                            <span className="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            {
+                                ( loading === false && error !== null ) && (
+                                    <div class="alert alert-danger" role="alert">
+                                        {error.message}
+                                    </div>
+                                )
+                            }
+                            {
+                                ( loading === false && error === null ) && (
+                                    workshops.map(
+                                        w => <div key={w.id}>{w.name}</div>
+                                    )
+                                )
+                            }
+                        </div>
+                    )
+                }
+
+                async fetchWorkshops() {
+                    this.setState({
+                        loading: true
+                    });
+
+                    // console.log( 'first render' );
+                    try {
+                        const data = await getWorkshops( this.state._page );
+                        // console.log( data );
+                        this.setState({
+                            workshops: data,
+                            loading: false
+                        });
+                    } catch( error ) {
+                        // console.log( error );
+                        this.setState({
+                            error, // error: error
+                            loading: false
+                        });
+                    }
+                }
+
+                // gets called after the first render
+                componentDidMount() {
+                    this.fetchWorkshops();   
+                }
+
+                // update phas lifecycle method - is called after 2nd, 3rd, 4th, ... renders
+                componentDidUpdate(prevProps, prevState) {
+                    // fetch new data only when "_page" state changes
+                    if( prevState._page !== this.state._page ) {
+                        this.fetchWorkshops();
+                    }
+                }
+
+                // called before the component unmounts (goes off the page)
+                componentWillUnmount() {
+                    console.log( 'Tata!' );
+                }
+            }
+
+            const root = ReactDOM.createRoot( document.getElementById( 'root' ) );
+            root.render( <WorkshopsList /> );
+            
+            setTimeout(() => {
+                root.render( <div>That's all folks!</div> );
+            }, 5000);
+            
+        </script>
+    </body>
+</html>
