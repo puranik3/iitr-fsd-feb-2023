@@ -7,4 +7,4 @@
 - supplied-files: Starter files to be used in various weeks. You can use this to try it yourself, what was covered in a webinar.
 
 ## References
-- You can understand wjat `useMemo()` hook is with examples in [this documentation page](https://react.dev/reference/react/useMemo)
+- You can understand what `useMemo()` hook is with examples in [this documentation page](https://react.dev/reference/react/useMemo)
