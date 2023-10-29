@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title></title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div id="root"></div>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.js"></script>
+
+        <script type="text/babel">
+            // useReducer helps maintain state and state changes through a single function - this function is referred to as a reducer
+            const DECREMENT = 'DECREMENT';
+            const INCREMENT = 'INCREMENT';
+
+            // The reducer should be a pure function
+            // - Does not change it arguments
+            // - Does not use any variables/functions other then the arguments received
+            // - Output is predictable
+            const counterReducer = ( state, action ) => {
+                switch( action.type ) {
+                    case DECREMENT:
+                        return {
+                            ...state,
+                            value: state.value - 1
+                        };
+                    case INCREMENT:
+                        return {
+                            ...state,
+                            value: state.value + 1
+                        };
+                    default:
+                        return state;
+                }
+            };
+
+            const Counter = () => {
+                const [ counter, dispatch ] = React.useReducer(counterReducer, {
+                    value: 0
+                });
+
+                const decrement = () => dispatch({ type: DECREMENT });
+
+                const increment = () => dispatch({ type: INCREMENT });
+
+                return (
+                    <div className="m-3">
+                        <button
+                            onClick={decrement}
+                        >
+                            -
+                        </button>
+                        <span className="mx-2">{counter.value}</span>
+                        <button
+                            onClick={increment}
+                        >
+                            +
+                        </button>
+                    </div>
+                )
+            };
+
+            const root = ReactDOM.createRoot( document.getElementById( 'root' ) );
+            root.render( <Counter /> );
+        </script>
+    </body>
+</html>

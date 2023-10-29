@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title></title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div id="root"></div>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.js"></script>
+
+        <script type="text/babel">
+            // When you need to share state between different components, store the shared state in the common ancestor
+            const Question = ( { question, toggle, open } ) => {
+                return (
+                    <div className="p-3 bg-primary text-light" onClick={toggle}>
+                        <span className="me-2">{open ? '-' : '+'}</span>
+                        {question}
+                    </div>
+                );
+            };
+
+            const Answer = ( { children, open } ) => {
+                return open ? (
+                    <div className="p-3">{children}</div>
+                ) : null;
+            };
+             
+            const QnA = ( { question, children } ) => {
+                const [ open, setOpen ] = React.useState( false );
+                const tg = () => setOpen( v => !v );
+
+                return (
+                    <div className="border border-primary">
+                        <Question question={question} toggle={tg} open={open} />
+                        <Answer open={open}>{children}</Answer>
+                    </div>
+                );
+            };
+
+            const root = ReactDOM.createRoot( document.getElementById( 'root' ) );
+            root.render(
+                <div className="container my-3">
+                    <QnA question="What is React?">
+                        <p>It is a frontend library to define views</p>
+                        <p>It was born as a project within Facebook in 2011. It was open-sourced in 2013</p>
+                    </QnA>
+                </div>
+            );
+        </script>
+    </body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title></title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div id="root"></div>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.js"></script>
+
+        <script type="text/babel">
+            // When you need to share state between different components, store the shared state in the common ancestor
+            // When wrapped with React.memo(), the component will re-render only when a new value for any of the props is passed
+            const Question = React.memo(
+                ( { question, toggle } ) => {
+                    console.log( 'render Question' );
+
+                    return (
+                        <div className="p-3 bg-primary text-light" onClick={toggle}>
+                            {question}
+                        </div>
+                    );
+                }
+            );
+
+            const Answer = ( { children, open } ) => {
+                console.log( 'render Answer' );
+
+                return open ? (
+                    <div className="p-3">{children}</div>
+                ) : null;
+            };
+             
+            const QnA = ( { question, children } ) => {
+                console.log( 'render QnA' );
+
+                const [ open, setOpen ] = React.useState( false );
+                
+                // tg function is recreated every time QnA function runs
+                // useCallback hook prevents recreation of this function in a render of QnA
+                // tg will be recreated only whens setOpen changes (its dependency)
+                const tg = React.useCallback( () => setOpen( v => !v ), [ setOpen ] );
+
+                return (
+                    <div className="border border-primary">
+                        <Question question={question} toggle={tg} />
+                        <Answer open={open}>{children}</Answer>
+                    </div>
+                );
+            };
+
+            const root = ReactDOM.createRoot( document.getElementById( 'root' ) );
+            root.render(
+                <div className="container my-3">
+                    <QnA question="What is React?">
+                        <p>It is a frontend library to define views</p>
+                        <p>It was born as a project within Facebook in 2011. It was open-sourced in 2013</p>
+                    </QnA>
+                </div>
+            );
+        </script>
+    </body>
+</html>

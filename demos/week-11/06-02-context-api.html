@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title></title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div id="root"></div>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.js"></script>
+
+        <script type="text/babel">
+            const documents = [
+                { title: 'React', description: 'A frontend library' },
+                { title: 'Redux', description: 'A JS library for maintaining global state' },
+                { title: 'React router', description: 'A React library for page navigation' },
+            ];
+
+            // 2 components are created along with the context object
+            // DocumentContext.Provider (used in the provider of the shared state - in this case App component)
+            // DocumentContext.Consumer (needed only by class components)
+            const DocumentContext = React.createContext();
+
+            const App = () => {
+                const [ curDoc, setCurDoc ] = React.useState( 0 );
+
+                const value = {
+                    // curDoc: curDoc,
+                    // setCurDoc: setCurDoc
+                    curDoc,
+                    setCurDoc
+                };
+
+                return (
+                    <DocumentContext.Provider value={value}>
+                        <div className="row">
+                            <B />
+                            <C />
+                        </div>
+                    </DocumentContext.Provider>
+                );
+            };
+
+            const B = () => {
+                return <div className="col-3"><E /></div>;
+            };
+
+            const E = () => {
+                return <Sidebar />;
+            };
+
+            const Sidebar = () => {
+                // React.useContext() returns the context vaue. We destructure and get what we want
+                const { setCurDoc } = React.useContext( DocumentContext );
+
+                return (
+                    <div>
+                        {
+                            documents.map( ( d, idx ) => (
+                                <div
+                                    key={d.title}
+                                    onClick={() => setCurDoc( idx )}
+                                >
+                                    {d.title}
+                                </div>
+                            ))
+                        }
+                    </div>
+                );
+            };
+
+            const C = () => {
+                return <div className="col-9"><Main /></div>;
+            };
+
+            const Main = () => {
+                const { curDoc } = React.useContext( DocumentContext );
+                return <div>{documents[curDoc].description}</div>
+            };
+
+            const root = ReactDOM.createRoot( document.getElementById( 'root' ) );
+            root.render(
+                <div className="container">
+                    <App />
+                </div>
+            );
+        </script>
+    </body>
+</html>
