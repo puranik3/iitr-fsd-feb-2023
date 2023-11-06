@@ -70,7 +70,7 @@ const LibraryDetails = () => {
                     </Row>
                 )
             }
-            <GenresList />
+            <GenresList id={id} />
         </div>
     );
 };
