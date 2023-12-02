@@ -1,0 +1,85 @@
+<!-- ! + Enter -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Hello Redux</title>
+    </head>
+    <body>
+        <div>
+            <button onclick="store.dispatch( decrement() )">-</button>
+            <span id="counter"></span>
+            <button onclick="store.dispatch( increment() )">+</button>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.2.1/redux.js"></script>
+
+        <script>
+            // action types
+            const INCREMENT = 'INCREMENT';
+            const DECREMENT = 'DECREMENT';
+
+            // action creators
+            const decrement = () => {
+                return {
+                    type: DECREMENT
+                };
+            };
+
+            const increment = () => {
+                return {
+                    type: INCREMENT
+                };
+            };
+
+            const initialCounterState = {
+                value: 0
+            };
+
+            // The reducer is a "pure function"
+            // It does not affect state outside (does not change variables created outside the function), nr does it use anything from outside the function
+            // It uses the arguments it receives. It does not change its arguments. This makes Redux predicatble (along with other rules).
+            // There is no randomness in the function (for given set of inputs, the return value is fixed)
+
+            // reducer is called for the first time when the store is initialized
+            // reducer is called when action is dispatched
+            const counterReducer = ( state = initialCounterState, action ) => {
+                let newState;
+
+                switch( action.type ) {
+                    case DECREMENT:
+                        // never write code like this
+                        // state.value++;
+                        // return state;
+
+                        newState = {
+                            ...state,
+                            value: state.value - 1,
+                        };
+                        break;
+                    case INCREMENT:
+                        newState = {
+                            ...state,
+                            value: state.value + 1
+                        };
+                        break;
+                    default:
+                        newState = state;
+                }
+
+                return newState;
+            };
+
+            const store = Redux.createStore( counterReducer );
+
+            const render = () => {
+                document.getElementById( 'counter' ).innerText = store.getState().value;
+            };
+
+            render();
+
+            store.subscribe( render );
+        </script>
+    </body>
+</html>

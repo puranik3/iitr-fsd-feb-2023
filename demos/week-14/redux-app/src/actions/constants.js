@@ -1,0 +1,9 @@
+const DECREMENT = 'DECREMENT';
+const INCREMENT = 'INCREMENT';
+const TOGGLE_THEME = 'TOGGLE_THEME';
+
+export {
+    DECREMENT,
+    INCREMENT,
+    TOGGLE_THEME
+};
